@@ -15,13 +15,6 @@
 
 ---
 
-## فهرست مطالب
-- [صفحات پروژه](#-صفحات-پروژه)
-- [ویژگی‌های کلیدی](#-ویژگی‌های-کلیدی)
-- [لینک‌های مفید](#-لینک‌های-مفید)
-- [راهنمای اجرا](#-راهنمای-اجرا)
-
----
 
 ## 🖼️ صفحات پروژه
 
@@ -40,13 +33,20 @@
 
 ## 🔗 لینک‌های مفید
  
-🔗 لینک‌های مفید
-تمپلیت‌های SVG کری کولوسکو
 
-آموزش ساخت پارامتر در Tabular Editor
+- تمپلیت‌های SVG کری کولوسکو:
+https://kerrykolosko.com/portfolio-category/svg-templates/
 
-اتصال Tabular Editor به SSAS
 
-مستندات رسمی Tabular Editor
+- آموزش ساخت پارامتر در Tabular Editor:
+https://docs.tabulareditor.com/common/CSharpScripts/Beginner/script-create-field-parameter.html
+https://dobbsondata.co.uk/2022/05/17/field-parameters-in-tabular-editor/
+
+
+- اتصال Tabular Editor به SSAS:
+https://elvinbaghele.medium.com/automatically-generate-measures-in-ssas-tabular-model-using-tabular-editor-68e63c258342
+
+
+
 
 
