@@ -1,4 +1,4 @@
-# KPICards-Secrets: مجموعه حرفه‌ای کارت‌های KPI در Power BI  
+# طراحی KPI کارت‌های حرفه‌ای در Power BI  
 
 ![Power BI](https://img.shields.io/badge/Power_BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
 ![Tabular Editor](https://img.shields.io/badge/Tabular_Editor-2C2D72?style=for-the-badge)
