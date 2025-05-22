@@ -34,16 +34,16 @@
 ## 🔗 لینک‌های مفید
  
 
-تمپلیت‌های SVG کری کولوسکو:
+تمپلیت‌های SVG کری کولوسکو:|
 https://kerrykolosko.com/portfolio-category/svg-templates/
 
 
-آموزش ساخت پارامتر در Tabular Editor:
+آموزش ساخت پارامتر در Tabular Editor:|
 https://docs.tabulareditor.com/common/CSharpScripts/Beginner/script-create-field-parameter.html
 https://dobbsondata.co.uk/2022/05/17/field-parameters-in-tabular-editor/
 
 
-اتصال Tabular Editor به SSAS:
+اتصال Tabular Editor به SSAS:|
 https://elvinbaghele.medium.com/automatically-generate-measures-in-ssas-tabular-model-using-tabular-editor-68e63c258342
 
 
