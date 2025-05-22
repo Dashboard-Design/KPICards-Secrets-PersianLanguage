@@ -38,7 +38,12 @@
 
 ---
 
-<svg viewBox="0 0 100 50">
-  <rect width="100%" height="100%" fill="#2C2D72"/>
-  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white">KPI</text>
-</svg>
+## 🔗 لینک‌های مفید
+ 
+- تمپلیت‌های SVG کری کولوسکو: https://kerrykolosko.com/portfolio-category/svg-templates/
+
+- آموزش ساخت پارامتر در Tabular Editor: https://docs.tabulareditor.com/common/CSharpScripts/Beginner/script-create-field-parameter.html
+- - 
+- اتصال Tabular Editor به SSAS: https://elvinbaghele.medium.com/automatically-generate-measures-in-ssas-tabular-model-using-tabular-editor-68e63c258342
+
+
