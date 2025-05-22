@@ -1,0 +1,112 @@
+7. SVG-Line = 
+VAR ViewBoxWidth  = 150
+VAR ViewBoxHeight =  65
+VAR Padding       =  20
+
+// Total SVG size (adds padding on left/right and top/bottom)
+VAR TotalWidth    = ViewBoxWidth  + 2 * Padding  // 190
+VAR TotalHeight   = ViewBoxHeight + 2 * Padding  // 105
+
+VAR LineColour    = "#323232"
+VAR HighlightColour = IF( [Sales] - [salesPreviousMonth] < 0, "%23FA0103", "%2369BA16" )
+
+// Which month was picked in the slicer?
+VAR SelectedMonth = SELECTEDVALUE( DimDate[EoFMonth] )
+
+// 1) All 12 months that have data
+VAR FilteredDates =
+    FILTER(
+        ALL( 'DimDate - (LineChart-Highlighting)'[EoFMonth] ),
+        NOT ISBLANK( [salesRemovedMonthFilter] )
+    )
+
+// 2) Rank them and compute the padded X coordinate
+VAR RankedDates =
+    ADDCOLUMNS(
+      ADDCOLUMNS(
+        FilteredDates,
+        "Rank", RANKX( FilteredDates, 'DimDate - (LineChart-Highlighting)'[EoFMonth], , ASC, DENSE )
+      ),
+      "X",
+        Padding
+      + INT(
+          ViewBoxWidth
+          * ( [Rank] - 1 )
+          / 11    // spread 12 points evenly
+        )
+    )
+
+// 3) Find data-domain for Y
+VAR YMin   = MINX( RankedDates, CALCULATE( [salesRemovedMonthFilter] ) )
+VAR YMax   = MAXX( RankedDates, CALCULATE( [salesRemovedMonthFilter] ) )
+VAR YRange = IF( YMax - YMin = 0, 1, YMax - YMin )
+
+// 4) Add the raw scaled Y ("YRaw")
+VAR WithYRaw =
+    ADDCOLUMNS(
+      RankedDates,
+      "YRaw",
+        INT(
+          ViewBoxHeight
+          * DIVIDE(
+              CALCULATE( [salesRemovedMonthFilter] ) - YMin,
+              YRange
+            )
+        )
+    )
+
+// 5) Shift Y into the padded area
+VAR WithY =
+    ADDCOLUMNS(
+      WithYRaw,
+      "Y",
+        Padding
+      + ( ViewBoxHeight - [YRaw] )
+    )
+
+// 6) Now add the SVG circles
+VAR FinalPoints =
+    ADDCOLUMNS(
+      WithY,
+      "Circle",
+        VAR CX = [X]
+        VAR CY = [Y]
+        VAR IsHighlight =
+            'DimDate - (LineChart-Highlighting)'[EoFMonth]
+            = SelectedMonth
+        RETURN
+          IF(
+            IsHighlight,
+            "<circle cx='" & CX & "' cy='" & CY &
+            "' r='5' stroke='" & HighlightColour &
+            "' stroke-width='2' fill='" & HighlightColour & "'/>",
+            "<circle cx='" & CX & "' cy='" & CY &
+            "' r='2' stroke='" & LineColour &
+            "' stroke-width='1' fill='" & LineColour & "'/>"
+          )
+    )
+
+// 7) Build the polyline string, ordered by Rank
+VAR PolylinePoints =
+    CONCATENATEX(
+      FinalPoints,
+      [X] & "," & [Y],
+      " ",
+      [Rank], ASC
+    )
+
+// 8) final SVG
+RETURN
+  "data:image/svg+xml;utf8,
+   <svg xmlns='http://www.w3.org/2000/svg'
+        viewBox='0 0 " & TotalWidth & " " & TotalHeight & "'
+        style='overflow:visible;'>
+     <polyline
+       points='" & PolylinePoints & "'
+       fill='none'
+       stroke='" & LineColour & "'
+       stroke-width='2'
+       stroke-linecap='round'
+       stroke-linejoin='round' />
+     " & CONCATENATEX( FinalPoints, [Circle] ) & "
+   </svg>"

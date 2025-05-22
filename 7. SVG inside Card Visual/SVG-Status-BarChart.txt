@@ -1,0 +1,38 @@
+7. SVG-StatusBar = 
+VAR BarWidth     = 260        // total bar width
+VAR BarHeight    = 16
+VAR BarY         = 8
+VAR CornerRadius = 8
+
+VAR CurSales     = [Sales]
+VAR PrevSales    = [salesPreviousMonth]
+VAR ScaleMax     = MAX( CurSales, PrevSales )
+
+// avoid divide-by-zero
+VAR SafeScale    = IF( ScaleMax = 0, 1, ScaleMax )
+
+// compute widths/positions
+VAR CurWidth     = (CurSales  / SafeScale) * BarWidth
+VAR PrevX        = (PrevSales / SafeScale) * BarWidth
+
+// color logic
+VAR FillColor    = IF( CurSales >= PrevSales, "#8FD349", "#FA0103" )
+
+RETURN
+"data:image/svg+xml;utf8,
+<svg xmlns='http://www.w3.org/2000/svg' width='300' height='30'>
+  <!-- Background grey bar -->
+  <rect x='0' y='" & BarY & "' width='" & BarWidth & "' height='" & BarHeight & "'
+        rx='" & CornerRadius & "' ry='" & CornerRadius & "' fill='#CCCCCC' />
+
+  <!-- Filled portion -->
+  <rect x='0' y='" & BarY & "' width='" & CurWidth & "' height='" & BarHeight & "'
+        rx='" & CornerRadius & "' ry='" & CornerRadius & "' fill='" & FillColor & "' />
+
+  <!-- Dashed marker at previous month -->
+  <line x1='" & PrevX & "' y1='" & (BarY - 5) & "' 
+        x2='" & PrevX & "' y2='" & (BarY + BarHeight + 5) & "'
+        stroke='black' stroke-width='2' stroke-dasharray='4,4' />
+</svg>"
+
+

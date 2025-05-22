@@ -1,0 +1,78 @@
+8. HTML = 
+
+VAR _max = MAXX( ALL( DimGeography[RegionCountryName] ), [Sales] )
+VAR _maxLY = MAXX( ALL( DimGeography[RegionCountryName]  ), [salesPreviousMonth] )
+VAR _maxALL = MAX( _max, _maxLY)
+
+VAR _Bar = ( [Sales] / _maxALL ) * 125
+VAR _LastYear = ( [salesPreviousMonth] / _maxALL ) * 125
+
+VAR _Target = MIN( [8. SalesVs.Target] , 1 ) * 130
+VAR _Target_Format = IF( [8. SalesVs.Target] >= 1, "✔ 0%", "✘ 0%" )
+
+
+RETURN
+"
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-10>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Bullet Chart - One Category</title>
+
+</head>
+<body>
+
+<!-- Category Title (Separate from other elements) -->
+<div class='bullet-chart-container'>
+    <span style='font-size: 12px; font-weight:500; color: black;'>"&SELECTEDVALUE(DimGeography[RegionCountryName])&"</span>
+
+    <!-- Target -->
+    <div class='bullet-chart'>
+        <span style='font-size: 11px; color: black;'>vs Target</span>
+        <span style='font-size: 11px; color: black;'>"&FORMAT( [8. SalesVs.Target],_Target_Format)&"</span>
+
+        <!-- Bullet Chart -->
+        <svg width='150' height='25'>
+            <rect x='0' y='5' width='130' height='10' fill='none' stroke='#DBD9D9' stroke-width='1.15'  />
+
+            <!-- Define Pattern for Fragmented Effect -->
+            <defs>
+                <pattern id='fragmentPattern' width='6' height='10' patternUnits='userSpaceOnUse'>
+                    <rect width='5.4' height='10' fill='#4C4C4C'/>
+                </pattern>
+            </defs>
+
+            <!-- Apply the Pattern to the Progress Bar -->
+            <rect x='0' y='5' width='"&_Target&"' height='10' fill='url(#fragmentPattern)' />
+        </svg>
+        </div>
+    </div>
+
+    <!-- Actual -->
+    <div class='bullet-chart'>
+        <span style='font-size: 11px; color: black;'>Actual</span>
+        <span style='font-size: 11px; color: black;'>"&FORMAT( [Sales],"#,##0,,.0")&"</span>
+
+        <!-- Bullet Chart -->
+        <svg width='130' height='20'>
+            <!-- Actual Value Bar -->
+            <rect x='0' y='5' width='"&_Bar&"' height='10' fill='"&[salesVsPreviousMonthCF]&"'></rect>
+
+            <!-- Target Marker -->
+            <line x1='"&_LastYear&"' y1='2' x2='"&_LastYear&"' y2='18' stroke='black' stroke-width='1.5'></line>
+        </svg>
+    </div>
+
+    <!-- Last Month -->
+    <div class='bullet-chart'>
+        <span style='font-size: 11px; color: black;'>Previous Month</span>
+        <span style='font-size: 11px; color: black;'>"& FORMAT( [salesPreviousMonth], "#,##0,,.0" ) &"</span>
+        <span style='font-size: 11px; color: "&[salesVsPreviousMonthCF]&";'>"& FORMAT( [salesVsPreviousMonth],"▲0.0%;▼0.0%")&"</span>
+
+    </div>
+
+
+</body>
+</html>
+"
