@@ -1,5 +1,8 @@
 # طراحی KPI کارت‌های حرفه‌ای در Power BI  
 
+![Image](https://github.com/user-attachments/assets/7e01cd06-2adc-4b5d-8e77-20af2b14e654)
+
+
 ![Power BI](https://img.shields.io/badge/Power_BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
 ![Tabular Editor](https://img.shields.io/badge/Tabular_Editor-2C2D72?style=for-the-badge)
 ![DAX](https://img.shields.io/badge/DAX-FF6F00?style=for-the-badge)
